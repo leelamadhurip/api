@@ -10,11 +10,11 @@ with open("q-vercel-python.json", "r") as f:
 @app.get("/api")
 def filter_data(
     name: List[str] = Query(...),
-    min_marks: int = Query(0),
-    max_marks: int = Query(100)
+    marks_min: int = Query(0),
+    marks_max: int = Query(100)
 ):
     filtered = [
         entry for entry in all_data
-        if entry["name"] in name and min_marks <= entry["marks"] <= max_marks
+        if entry["name"] in name and marks_min <= entry["marks"] <= marks_max
     ]
     return filtered

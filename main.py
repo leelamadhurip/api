@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Query
-from typing import List
+from typing import List, Optional
 import json
 
 app = FastAPI()
@@ -9,12 +9,12 @@ with open("q-vercel-python.json", "r") as f:
 
 @app.get("/api")
 def filter_data(
-    name: List[str] = Query(...),
+    name: Optional[List[str]] = Query(None),
     marks_min: int = Query(0),
     marks_max: int = Query(100)
 ):
     marks = [
         entry["marks"] for entry in all_data
-        if entry["name"] in name and marks_min <= entry["marks"] <= marks_max
+        if (name is None or entry["name"] in name) and marks_min <= entry["marks"] <= marks_max
     ]
     return {"marks": marks}

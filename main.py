@@ -1,5 +1,4 @@
 from fastapi import FastAPI, Query
-from pydantic import BaseModel
 from typing import List
 import json
 
@@ -8,15 +7,14 @@ app = FastAPI()
 with open("q-vercel-python.json", "r") as f:
     all_data = json.load(f)
 
-class MarksFilter(BaseModel):
-    marks: List[int]
-
-@app.post("/api")
-def filter_data(names: List[str] = Query(...), marks_filter: MarksFilter = None):
-    min_mark, max_mark = marks_filter.marks
-
+@app.get("/api")
+def filter_data(
+    name: List[str] = Query(...),
+    min_marks: int = Query(0),
+    max_marks: int = Query(100)
+):
     filtered = [
         entry for entry in all_data
-        if entry["name"] in names and min_mark <= entry["marks"] <= max_mark
+        if entry["name"] in name and min_marks <= entry["marks"] <= max_marks
     ]
     return filtered

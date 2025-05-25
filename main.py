@@ -13,8 +13,8 @@ def filter_data(
     marks_min: int = Query(0),
     marks_max: int = Query(100)
 ):
-    filtered = [
-        entry for entry in all_data
+    marks = [
+        entry["marks"] for entry in all_data
         if entry["name"] in name and marks_min <= entry["marks"] <= marks_max
     ]
-    return filtered
+    return {"marks": marks}
